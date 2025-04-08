@@ -10,4 +10,5 @@ public class ShipDataSO : ScriptableObject
     public float handling;
     public float scoreSpeed;
     public Color shipColor;
+    public float Cadence;
 }

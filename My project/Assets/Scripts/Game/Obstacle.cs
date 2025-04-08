@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Obstacle : MonoBehaviour
 {
     public int damageAmount = 10;
     public float moveSpeed = 5f;
@@ -12,11 +12,9 @@ public class Enemy : MonoBehaviour
             collision.gameObject.GetComponent<PlayerController>().TakeDamage(damageAmount);
             Debug.Log("Jugador tocado por enemigo.");
         }
-        else if (collision.gameObject.CompareTag("Boundary")) // Añade un collider invisible en los límites
+        else if (collision.gameObject.CompareTag("Boundary"))
         {
-            EnemyPool.Instance.ReturnEnemy(gameObject);
+            ObstaclePool.Instance.ReturnObstacle(gameObject);
         }
     }
 }
-
-

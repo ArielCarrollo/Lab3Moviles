@@ -11,8 +11,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Score_LifeDataSO currentHealth;
     [SerializeField] private PaletteSO paletteColor;
 
+    private float timeSinceLastShot;
+    private bool isTouching;
+
     void Start()
     {
+        currentHealth.ResetScore();
         if (selectedShipData.selectedShip != null)
         {
             currentHealth.currentlife = selectedShipData.selectedShip.maxHealth;
@@ -23,12 +27,45 @@ public class PlayerController : MonoBehaviour
             Debug.LogWarning("No se ha seleccionado una nave.");
             currentHealth.currentlife = 1;
         }
+
+        timeSinceLastShot = 0f;
+        isTouching = false;
     }
+
     void Update()
     {
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (Input.touchCount > 0)
         {
-            Shoot();
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == TouchPhase.Began)
+            {
+                isTouching = true;
+            }
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+            {
+                isTouching = false;
+            }
+        }
+        else
+        {
+            isTouching = false;
+        }
+
+        if (isTouching)
+        {
+            timeSinceLastShot += Time.deltaTime;
+
+            if (selectedShipData.selectedShip != null &&
+                timeSinceLastShot >= selectedShipData.selectedShip.Cadence)
+            {
+                Shoot();
+                timeSinceLastShot = 0f; 
+            }
+        }
+        else
+        {
+            timeSinceLastShot = 0f;
         }
     }
 
@@ -51,7 +88,10 @@ public class PlayerController : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
+        GameObject bullet = BulletPool.Instance.GetBullet();
+        bullet.transform.position = shootPoint.position;
+        bullet.transform.rotation = Quaternion.identity;
+
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {

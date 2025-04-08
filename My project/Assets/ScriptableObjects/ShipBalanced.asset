@@ -19,3 +19,4 @@ MonoBehaviour:
   handling: 30
   scoreSpeed: 50
   shipColor: {r: 1, g: 0, b: 1, a: 1}
+  Cadence: 1

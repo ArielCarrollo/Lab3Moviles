@@ -22,7 +22,8 @@ public class ShipSelector : MonoBehaviour
     [Header("Sliders por Nave")]
     public List<Slider> healthSliders;     
     public List<Slider> handlingSliders;    
-    public List<Slider> scoreSpeedSliders; 
+    public List<Slider> scoreSpeedSliders;
+    public List<Slider> cadenceSliders;
 
     private void Awake()
     {
@@ -43,6 +44,9 @@ public class ShipSelector : MonoBehaviour
 
             if (i < scoreSpeedSliders.Count)
                 scoreSpeedSliders[i].value = ships[i].scoreSpeed;
+
+            if (i < cadenceSliders.Count)
+                cadenceSliders[i].value = ships[i].Cadence;
         }
     }
     public void SelectShip1()
